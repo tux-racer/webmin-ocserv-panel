@@ -1,0 +1,6 @@
+desc=Ocserv Panel
+name=Ocserv
+category=net
+version=1.0
+usermin=no
+longdesc=Configure some of Ocserv
