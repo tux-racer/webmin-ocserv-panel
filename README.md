@@ -16,6 +16,8 @@ perl /usr/share/webmin/ocserv-panel/index.cgi
 
 or
 download ocserv-panel.wbm.gz
+then
+install module for from webmin module
 
 https://github.com/tux-racer/webmin-ocserv-panel/releases/tag/webmin
 
