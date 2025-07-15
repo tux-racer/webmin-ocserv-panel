@@ -18,7 +18,7 @@ or
 download ocserv-panel.wbm.gz
 
 https://github.com/tux-racer/webmin-ocserv-panel/releases/tag/webmin
-then 
+then <br>
 install module for from webmin module
 
 <img width="782" height="474" alt="Screenshot at 2025-07-15 09-30-34" src="https://github.com/user-attachments/assets/84165d2b-e042-48d9-9c36-c9ce7f4864f7" />
