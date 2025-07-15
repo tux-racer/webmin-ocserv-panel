@@ -1,25 +1,44 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
-use lib $ENV{'WEBMIN_LIB'};
+use CGI;
+use CGI::Carp qw(fatalsToBrowser);
+use URI::Escape;
 use WebminCore;
+
 &init_config;
-&ReadParse();  # WAJIB! Untuk mengisi %in dari POST/GET
+my $q = CGI->new;
 
-my $username = $in{'username'};
-my $password = $in{'password'};
+# Ambil input dari form
+my $username = $q->param('username') // '';
+my $password = $q->param('password') // '';
 
-&header("Add User", "");
-
+# Validasi input kosong
 if (!$username || !$password) {
-    print "<h3>Error: Username or password is missing.</h3>\n";
-    &footer();
+    my $msg = uri_escape("Error: Username atau password kosong.");
+    print $q->redirect("index.cgi?result=$msg");
     exit;
 }
 
-# Buat file expect sementara
+# Validasi username agar aman
+if ($username !~ /^[a-zA-Z0-9_.-]+$/) {
+    my $msg = uri_escape("Error: Username tidak valid (hanya huruf, angka, titik, strip, underscore).");
+    print $q->redirect("index.cgi?result=$msg");
+    exit;
+}
+
+# Periksa apakah binary expect ada
+my $expect_bin = `which expect`;
+chomp($expect_bin);
+if (!$expect_bin || !-x $expect_bin) {
+    my $msg = uri_escape("Error: 'expect' tidak ditemukan di sistem.");
+    print $q->redirect("index.cgi?result=$msg");
+    exit;
+}
+
+# Tulis skrip expect ke file sementara
 my $expect_script = "/tmp/ocpasswd_$username.expect";
-open(my $fh, '>', $expect_script);
+open(my $fh, '>', $expect_script) or die "Tidak bisa menulis ke $expect_script: $!";
 print $fh <<EOF;
 #!/usr/bin/expect -f
 set timeout 5
@@ -34,11 +53,10 @@ EOF
 close($fh);
 chmod 0755, $expect_script;
 
-# Jalankan
-my $output = `expect $expect_script 2>&1`;
+# Jalankan skrip expect dan ambil output
+my $output = `$expect_script 2>&1`;
 unlink $expect_script;
 
-print "<pre>$output</pre>";
-print "<p>User <b>$username</b> has been added.</p>";
-print "<a href='index.cgi'>← Kembali</a>";
-&footer();
+# Redirect ke index.cgi dengan output sebagai result
+my $encoded = uri_escape($output);
+print $q->redirect("index.cgi?result=$encoded");
