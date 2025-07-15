@@ -1,4 +1,4 @@
-This is webmin module for Ocserv or openconnect vpn for user manager, add user, remove user, show all user, show online user and disconnect
+This is user manager webmin module for Ocserv or openconnect vpn, add user, remove user, show all user, show online user and disconnect
 
 copy ocserv-panel
 to
@@ -13,3 +13,10 @@ systemctl restart webmin
 check
 
 perl /usr/share/webmin/ocserv-panel/index.cgi
+
+or
+download ocserv-panel.wbm.gz
+
+https://github.com/tux-racer/webmin-ocserv-panel/releases/tag/webmin
+then
+install module for from webmin module
