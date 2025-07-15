@@ -1,17 +1,17 @@
+# webmin modeul ocserv panel
+
 This is user manager webmin module for Ocserv or openconnect vpn, add user, remove user, show all user, show online user and disconnect
 
-copy ocserv-panel
-to
-/usr/share/webmin
+extract / clone (example ocserv-panel) directory copy to /usr/share/webmin
 
-install libcgi-pm-perl
-apt install libcgi-pm-perl
+Requirement pakage
+install libcgi-pm-perl on debian apt install libcgi-pm-perl
+install expect package on debian apt install expect
 
 restart
 systemctl restart webmin
 
 check
-
 perl /usr/share/webmin/ocserv-panel/index.cgi
 
 or
